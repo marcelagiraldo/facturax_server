@@ -5,12 +5,12 @@ export async function getUsertById(id) {
     return result.rows[0]
 }
 
-export async function createUser(documento, nombre, apellido, email, telefono, contraseia) {
+export async function createUser(documento, nombre, apellido, email, telefono, contraseia,rol='admin') {
     const query = `
-        INSERT INTO proyecto.users (id, documento, nombre, apellido, email, telefono, contraseia)
-        VALUES (nextval('proyecto.codigo_user'), $1, $2, $3, $4, $5, $6) RETURNING *;
+        INSERT INTO proyecto.users (id, documento, nombre, apellido, email, telefono, contraseia,rol)
+        VALUES (nextval('proyecto.codigo_user'), $1, $2, $3, $4, $5, $6,$7) RETURNING *;
     `
-    const values = [documento, nombre, apellido, email, telefono, contraseia]
+    const values = [documento, nombre, apellido, email, telefono, contraseia,rol]
     try {
         console.log("Ejecutando consulta SQL:", query);
         console.log("Valores enviados:", values);
