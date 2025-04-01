@@ -5,7 +5,7 @@ export async function getUsertById(id) {
     return result.rows[0]
 }
 
-export async function createUser(documento, nombre, apellido, email, telefono, contraseia,rol='admin') {
+export async function createUser(documento, nombre, apellido, email, telefono, contraseia,rol) {
     const query = `
         INSERT INTO proyecto.users (id, documento, nombre, apellido, email, telefono, contraseia,rol)
         VALUES (nextval('proyecto.codigo_user'), $1, $2, $3, $4, $5, $6,$7) RETURNING *;
