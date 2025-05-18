@@ -1,8 +1,10 @@
-import { createProduct, deleteProduct, getProductById, getProducts } from "../services/product.service.js";
+import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "../services/product.service.js";
 
 export const getProductsController = async (req, res, next) => {
     try {
-        const product = await getProducts();
+	    const setId = req.params.id
+	    console.log('Documento en controller: ',setId)
+        const product = await getProducts(setId);
         res.json(product);
     } catch (error) {
         next(error);
@@ -25,7 +27,7 @@ export const postProductController = async (req, res, next) => {
     try {
         const { codigo, descripcion, precio_venta, impuesto_id_fk, medida, categoria_id_fk,user_id } = req.body;
 
-        if (!codigo || !descripcion || !precio_venta || !impuesto_id_fk || !medida || !categoria_id_fk || user_id) {
+        if (!codigo || !descripcion || !precio_venta || !impuesto_id_fk || !user_id) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
@@ -44,7 +46,7 @@ export const updateProductController = async (req, res) => {
             return res.status(400).json({ message: "El número de código es obligatorio" });
         }
 
-        const updatedProduct = await updateClient(codigo, descripcion, precio_venta, impuesto_id_fk, medida, categoria_id_fk);
+        const updatedProduct = await updateProduct(codigo, descripcion, precio_venta, impuesto_id_fk, medida, categoria_id_fk);
         
         return res.status(200).json({ message: "Producto actualizado exitosamente", product: updatedProduct });
     } catch (error) {

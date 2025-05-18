@@ -3,7 +3,7 @@ import {deleteClientController, getClientByIdController, getClientsController, p
 
 const router = express.Router()
 
-router.get('/',getClientsController)
+router.get('/:id',getClientsController)
 router.get('/:id',getClientByIdController)
 router.post('/',postClientController)
 router.patch('/:id',updateClientController)

@@ -2,6 +2,10 @@ import { createUser, getUsertById, updateUser } from "../services/user.service.j
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import pool from "../config/db.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export const getUserByIdController = async (req, res, next) => {
     try {
@@ -15,9 +19,9 @@ export const getUserByIdController = async (req, res, next) => {
 };
 
 export const postUserController = async (req, res, next) => {
-    const { documento, nombre, apellido, email, telefono, contraseia,rol } = req.body;
+    const { documento, nombre, apellido, email, telefono, contraseia, rol } = req.body;
     try {
-        if (!documento || !nombre || !apellido || !email || !telefono || !contraseia || !rol) {
+        if (!documento || !nombre || !apellido || !email || !telefono || !contraseia) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
         const oldUser = await getUsertById(documento)
@@ -37,31 +41,48 @@ export const postUserController = async (req, res, next) => {
 
 export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
-    console.log("Cuerpo de la solicitud (req.body):", req.body);
-    try {
-        console.log("Email recibido:", email);
-        const result = await pool.query("SELECT * FROM proyecto.loginUser($1)", [email]);
-        if (result.rows.length === 0) return res.status(400).json({ error: "Usuario no encontrado" });
 
+    try {
+        const result = await pool.query("SELECT * FROM proyecto.loginUser($1)", [email]);
+
+        if (result.rows.length === 0) {
+            return res.status(400).json({ error: "Usuario no encontrado" });
+        }
 
         const user = result.rows[0];
-        console.log(user);
-        
-        console.log(email);
-        console.log(password);
-        console.log(user.contraseia_);
-
         const passwordMatch = await bcrypt.compare(password, user.contraseia_);
-        if (!passwordMatch) return res.status(400).json({ error: "Contraseña incorrecta" });
 
-        res.json({ success: true, token: "aquí_va_el_token",
-            user:{nombre:user.nombre_,documento:user.documento_,apellido:user.apellido_,email:user.email_,telefono:user.telefono_,contraseia:user.contraseia_},
-             message: "Login exitoso" });
+        if (!passwordMatch) {
+            return res.status(400).json({ error: "Contraseña incorrecta" });
+        }
+
+        const payload = {
+            id: user.documento_,
+            email: user.email_,
+            rol: user.rol_,
+        };
+
+        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+
+        res.json({
+            success: true,
+            token,
+            user: {
+                nombre: user.nombre_,
+                documento: user.documento_,
+                apellido: user.apellido_,
+                email: user.email_,
+                telefono: user.telefono_,
+                rol: user.rol_,
+            },
+            message: "Login exitoso",
+        });
+
     } catch (err) {
         console.error("Error en el login:", err);
-        res.status(500).json({ error: "Error en el login",detalle: err.message });
+        res.status(500).json({ error: "Error en el login", detalle: err.message });
     }
-}
+};
 
 export const updateUserController = async (req, res) => {
     try {

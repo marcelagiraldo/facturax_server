@@ -1,8 +1,14 @@
 import pool from "../config/db.js"
 
-export async function getProducts() {
-    const result = await pool.query('SELECT * FROM proyecto.obtener_productos()');
-    return result.rows;
+export async function getProducts(user_id_) {
+	try{
+		if (!user_id_) throw new Error('User ID is required');
+    		const result = await pool.query('select * from proyecto.productos where administrador_id=$1;',[user_id_]);
+    	return result.rows || [];
+	}catch(error){
+		console.error('Error fetching products:', error);
+        	throw error;
+	}
 };
 
 export async function getProductById(codigo) {
