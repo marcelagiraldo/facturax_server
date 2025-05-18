@@ -24,6 +24,10 @@ export const postUserController = async (req, res, next) => {
         if (!documento || !nombre || !apellido || !email || !telefono || !contraseia) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
+
+        if (!rol || rol.trim() === '') {
+            rol = 'admin'; 
+        }
         const oldUser = await getUsertById(documento)
 
         if (oldUser) {
