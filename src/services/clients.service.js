@@ -1,7 +1,7 @@
 import pool from "../config/db.js"
 
-export async function getClients() {
-    const result = await pool.query('SELECT * FROM proyecto.obtener_clientes()');
+export async function getClients(user_id) {
+    const result = await pool.query('SELECT * FROM proyecto.clientes where uder_id=$1',[user_id]);
     return result.rows;
 };
 
@@ -10,9 +10,9 @@ export async function getClientById(id) {
     return result.rows[0]
 }
 
-export async function createClient(documento, nombre, direccion, telefono, email, ciudad, departamento) {
-    const query = 'call proyecto.crear_clientes($1,$2,$3,$4,$5,$6,$7)'
-    const values = [documento, nombre, direccion, telefono, email, ciudad, departamento]
+export async function createClient(documento, nombre, direccion, telefono, email, ciudad, departamento,user_id) {
+    const query = 'call proyecto.crear_clientes($1,$2,$3,$4,$5,$6,$7,$8)'
+    const values = [documento, nombre, direccion, telefono, email, ciudad, departamento,user_id]
     await pool.query(query, values)
     return { message: 'Cliente creado exitosamente' };
 }

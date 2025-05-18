@@ -2,7 +2,8 @@ import { createClient, deleteClient, getClientById, getClients, updateClient } f
 
 export const getClientsController = async (req, res, next) => {
     try {
-        const clients = await getClients();
+	    const setId = req.params.id
+        const clients = await getClients(setId);
         res.json(clients);
     } catch (error) {
         next(error);
@@ -23,13 +24,14 @@ export const getClientByIdController = async (req, res, next) => {
 
 export const postClientController = async (req, res, next) => {
     try {
-        const { documento, nombre, direccion, telefono, email, ciudad, departamento } = req.body;
+	console.log("Datos recibidos:", req.body);
+        const { numero_documento, nombre, direccion, telefono, email, ciudad, departamento,user_id } = req.body;
 
-        if (!documento || !nombre || !direccion || !telefono || !email || !ciudad || !departamento) {
+        if (!numero_documento || !nombre || !direccion || !telefono || !email || !ciudad || !departamento || !user_id) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        const resultado = await createClient(documento, nombre, direccion, telefono, email, ciudad, departamento);
+        const resultado = await createClient(numero_documento, nombre, direccion, telefono, email, ciudad, departamento,user_id);
         res.status(201).json(resultado);
     } catch (error) {
         next(error);

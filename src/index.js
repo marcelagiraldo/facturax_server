@@ -23,7 +23,7 @@ app.listen(PORT, () => {
 app.use(cors())
 app.use(express.json());
 
-app.get('/', async (req,res)=>{
+app.get('/api',async (req,res)=>{
   console.log('Start');
   const result = await pool.query("SELECT current_database()")
   console.log('End');
@@ -31,19 +31,19 @@ app.get('/', async (req,res)=>{
   
 })
 
-app.get('/ping', async(req,res)=>{
+app.get('/api/ping', async(req,res)=>{
   const result = await pool.query('SELECT NOW()')
   return res.json(result.rows[0])
 })
 
-app.use('/clientes', clientRoutes);
-app.use('/categorias', categoryRoutes);
-app.use('/facturas', invoiceRoutes);
-app.use('/detallesFactura', invoiceDetailsRoutes);
-app.use('/metodosPago', paymentMethodRoutes);
-app.use('/productos', productRoutes);
-app.use('/impuestos', taxesRoutes);
-app.use('/usuarios', userRoutes);
+app.use('/api/clientes', clientRoutes);
+app.use('/api/categorias', categoryRoutes);
+app.use('/api/facturas', invoiceRoutes);
+app.use('/api/detallesFactura', invoiceDetailsRoutes);
+app.use('/api/metodosPago', paymentMethodRoutes);
+app.use('/api/productos', productRoutes);
+app.use('/api/impuestos', taxesRoutes);
+app.use('/api/usuarios', userRoutes);
 
 app.use(errorHandler);
 

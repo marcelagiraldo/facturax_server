@@ -1,21 +1,37 @@
 import pool from "../config/db.js"
 
-export async function getInvoices() {
-    const result = await pool.query('SELECT * FROM proyecto.obtener_facturas()');
+export async function getInvoices(){
+  try {
+    const result = await pool.query('SELECT * FROM proyecto.consultar_facturas();');
+    console.log('Facturas:', result.rows);
     return result.rows;
-};
-
-/* export async function getInvoiceById(id) {
-    const result = await pool.query(`select * from proyecto.obtener_cliente($1)`, [id])
-    return result.rows[0]
-} */
-
-export async function createInvoice(codigo,fecha,subtotal,total_impuestos,total,estado,id_cliente_fk,id_metodo_pago_fk) {
-    const query = 'call proyecto.crear_facturas($1,$2,$3,$4,$5,$6,$7,$8)'
-    const values = [codigo,fecha,subtotal,total_impuestos,total,estado,id_cliente_fk,id_metodo_pago_fk]
-    await pool.query(query, values)
-    return { message: 'Factura creado exitosamente' };
+  } catch (error) {
+    console.error('Error al consultar facturas:', error);
+    throw error;
+  }
 }
+
+export async function getInvoiceAdmin(adminId) {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM proyecto.consultar_facturas_por_admin($1);',
+      [adminId]
+    );
+    console.log('Facturas del administrador:', result.rows);
+    return result.rows;
+  } catch (error) {
+    console.error('Error al consultar facturas por administrador:', error);
+    throw error;
+  }
+}
+
+export async function createInvoice (numero_factura, cliente_documento, administrador_id, productos, cantidades) {
+  const query = 'SELECT proyecto.crear_factura($1, $2, $3, $4, $5)';
+  const values = [numero_factura, cliente_documento, administrador_id, productos, cantidades];
+
+  const result = await pool.query(query, values);
+  return result.rows[0];
+};
 
 /* export async function updateInvoice(documento, nombre, direccion, telefono, email, ciudad, departamento) {
     const query = 'call proyecto.modificar_clientes($1,$2,$3,$4,$5,$6,$7)'
