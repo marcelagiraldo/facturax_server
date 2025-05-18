@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 3006;
 
 app.listen(PORT, () => {
-  console.log(`El Servidor esta corriendo en http://localhost:${PORT}`);
+  console.log(`Hola, el Servidor esta corriendo en http://localhost:${PORT}`);
 });
 
 
