@@ -83,7 +83,7 @@ export const loginUser = async (req, res, next) => {
             message: "Login exitoso",
         });
 
-        console.log("Usuario en el backend con login: ",user);
+        console.log("Datos enviados al front ",res.json);
         
 
     } catch (err) {
