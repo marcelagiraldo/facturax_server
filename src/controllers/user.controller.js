@@ -47,7 +47,7 @@ export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
-        const result = await pool.query("SELECT * FROM proyecto.loginUser($1)", [email]);
+        const result = await pool.query("SELECT * FROM proyecto.loginuser($1)", [email]);
 
         if (result.rows.length === 0) {
             return res.status(400).json({ error: "Usuario no encontrado" });
