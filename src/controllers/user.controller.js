@@ -26,7 +26,7 @@ export const postUserController = async (req, res, next) => {
         }
 
         if (!rol || rol.trim() === '') {
-            rol = 'admin'; 
+            rol = 'admin';
         }
         const oldUser = await getUsertById(documento)
 
@@ -36,7 +36,7 @@ export const postUserController = async (req, res, next) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(contraseia, saltRounds);
 
-        const resultado = await createUser(documento, nombre, apellido, email, telefono, hashedPassword,rol);
+        const resultado = await createUser(documento, nombre, apellido, email, telefono, hashedPassword, rol);
         res.status(201).json(resultado);
     } catch (error) {
         next(error);
@@ -68,7 +68,7 @@ export const loginUser = async (req, res, next) => {
 
         const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
 
-        res.json({
+        const responseData = {
             success: true,
             token,
             user: {
@@ -78,13 +78,14 @@ export const loginUser = async (req, res, next) => {
                 email: user.email_,
                 telefono: user.telefono_,
                 rol: user.rol_,
-                administrador_id : user.administrador_id_
+                administrador_id: user.administrador_id_
             },
             message: "Login exitoso",
-        });
+        };
 
-        console.log("Datos enviados al front ",res.json);
-        
+        console.log("Datos enviados al front:", responseData);
+
+        res.json(responseData);
 
     } catch (err) {
         console.error("Error en el login:", err);
