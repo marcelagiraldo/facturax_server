@@ -83,6 +83,9 @@ export const loginUser = async (req, res, next) => {
             message: "Login exitoso",
         });
 
+        console.log("Usuario en el backend con login: ",user);
+        
+
     } catch (err) {
         console.error("Error en el login:", err);
         res.status(500).json({ error: "Error en el login", detalle: err.message });
