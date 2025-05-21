@@ -78,6 +78,7 @@ export const loginUser = async (req, res, next) => {
                 email: user.email_,
                 telefono: user.telefono_,
                 rol: user.rol_,
+                administrador_id : user.administrador_id
             },
             message: "Login exitoso",
         });
