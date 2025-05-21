@@ -42,3 +42,51 @@ export const postInvoiceController = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getVentasDelDia = async (req, res) => {
+  try {
+    const { admin_id } = req.query;
+
+    if (!admin_id) {
+      return res.status(400).json({ error: "admin_id es requerido" });
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const result = await pool.query(`
+      SELECT metodo_pago, SUM(total) as total
+      FROM facturas
+      WHERE administrador_id = $1
+        AND fecha >= $2 AND fecha < $3
+      GROUP BY metodo_pago
+    `, [admin_id, today, tomorrow]);
+
+    let totalVentas = 0;
+    let totalEfectivo = 0;
+    let totalOtros = 0;
+
+    result.rows.forEach(row => {
+      const total = parseFloat(row.total);
+      totalVentas += total;
+
+      if (row.metodo_pago.toLowerCase() === "efectivo") {
+        totalEfectivo += total;
+      } else {
+        totalOtros += total;
+      }
+    });
+
+    res.json({
+      totalVentas,
+      totalEfectivo,
+      totalOtros
+    });
+
+  } catch (error) {
+    console.error("Error al obtener ventas del día:", error.message);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
