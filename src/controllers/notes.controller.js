@@ -1,4 +1,4 @@
-import { borrarNota, crearNota, listarNotas } from "../services/notes.service";
+import { borrarNota, crearNota, listarNotas } from "../services/notes.service.js";
 
 export const crearNotaController = async (req, res) => {
   const { title, date } = req.body;
