@@ -11,7 +11,7 @@ import noteRoutes from './routes/notes.router.js'
 import pool from './config/db.js'
 import {errorHandler} from './middleware/errorHandler.js'
 import cors from 'cors'
-
+import { sendPushNotification } from "./sendPushNotification";
 const app = express();
 
 const PORT = process.env.PORT || 3006;
@@ -36,6 +36,17 @@ app.get('/api/ping', async(req,res)=>{
   const result = await pool.query('SELECT NOW()')
   return res.json(result.rows[0])
 })
+
+app.post("/send-notification", async (req, res) => {
+  const { token, message } = req.body;
+
+  if (!token || !message) {
+    return res.status(400).json({ error: "Token and message are required" });
+  }
+
+  await sendPushNotification(token, message);
+  res.json({ success: true });
+});
 
 app.use('/api/clientes', clientRoutes);
 app.use('/api/categorias', categoryRoutes);
