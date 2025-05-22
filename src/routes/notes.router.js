@@ -4,6 +4,6 @@ const router = express.Router()
 
 router.get('/',listarNotasController)
 router.post('/',crearNotaController)
-router.get('/:id',borrarNotaController)
+router.delete('/:id',borrarNotaController)
 
 export default router

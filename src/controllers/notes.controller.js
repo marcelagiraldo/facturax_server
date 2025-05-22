@@ -1,4 +1,4 @@
-import { crearNota, listarNotas } from "../services/notes.service";
+import { borrarNota, crearNota, listarNotas } from "../services/notes.service";
 
 export const crearNotaController = async (req, res) => {
   const { title, date } = req.body;
@@ -22,7 +22,7 @@ export const listarNotasController = async (req, res) => {
 export const borrarNotaController = async (req, res) => {
   const { id } = req.params;
   try {
-    await notasService.borrarNotaController(id);
+    await borrarNota(id);
     res.json({ message: 'Nota eliminada' });
   } catch (error) {
     res.status(500).json({ error: error.message });
