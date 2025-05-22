@@ -7,6 +7,7 @@ import paymentMethodRoutes from './routes/payment.method.router.js'
 import productRoutes from './routes/products.router.js'
 import taxesRoutes from './routes/taxes.router.js'
 import userRoutes from './routes/user.router.js'
+import noteRoutes from './routes/notes.router.js'
 import pool from './config/db.js'
 import {errorHandler} from './middleware/errorHandler.js'
 import cors from 'cors'
@@ -44,6 +45,7 @@ app.use('/api/metodosPago', paymentMethodRoutes);
 app.use('/api/productos', productRoutes);
 app.use('/api/impuestos', taxesRoutes);
 app.use('/api/usuarios', userRoutes);
+app.use('/api/notas', noteRoutes);
 
 app.use(errorHandler);
 
