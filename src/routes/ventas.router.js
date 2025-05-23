@@ -5,4 +5,4 @@ const router = express.Router();
 
 router.get("/dia", getVentasDelDia);
 
-module.exports = router;
+export default router;
