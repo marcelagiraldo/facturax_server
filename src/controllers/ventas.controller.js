@@ -1,4 +1,4 @@
-const { obtenerVentasDelDia } = require("../services/ventas.service");
+import { obtenerVentasDelDia } from "../services/ventas.service";
 
 // controllers/facturaController.js
 export const getVentasDelDia = async (req, res) => {
