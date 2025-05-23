@@ -14,7 +14,7 @@ export async function getProducts(user_id_) {
 export async function getProductsInactive(user_id_) {
 	try{
 		if (!user_id_) throw new Error('User ID is required');
-    		const result = await pool.query('select * from proyecto.listar_productos_activos($1);',[user_id_]);
+    		const result = await pool.query(`select * from proyecto.productos where administrador_id=$1 and estado='activo';`,[user_id_]);
     	return result.rows || [];
 	}catch(error){
 		console.error('Error fetching products:', error);
