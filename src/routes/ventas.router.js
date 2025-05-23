@@ -1,5 +1,5 @@
 // routes/invoiceRoutes.js
-const express = require("express");
+import express from 'express'
 const { getVentasDelDia } = require("../controllers/ventas.controller");
 const router = express.Router();
 
