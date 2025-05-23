@@ -25,9 +25,9 @@ export async function getInvoiceAdmin(adminId) {
   }
 }
 
-export async function createInvoice (numero_factura, cliente_documento, administrador_id, productos, cantidades) {
-  const query = 'SELECT proyecto.crear_factura($1, $2, $3, $4, $5)';
-  const values = [numero_factura, cliente_documento, administrador_id, productos, cantidades];
+export async function createInvoice (numero_factura, cliente_documento, administrador_id, productos, cantidades,metodoPago) {
+  const query = 'SELECT proyecto.crear_factura($1, $2, $3, $4, $5,$6)';
+  const values = [numero_factura, cliente_documento, administrador_id, productos, cantidades,metodoPago];
 
   const result = await pool.query(query, values);
   return result.rows[0];

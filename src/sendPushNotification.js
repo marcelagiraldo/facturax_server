@@ -1,6 +1,5 @@
 import {Expo} from "expo-server-sdk";
 
-// Se puede guardar y reutilizar la instancia
 const expo = new Expo();
 
 export async function sendPushNotification(expoPushToken, message) {
