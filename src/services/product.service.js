@@ -11,6 +11,17 @@ export async function getProducts(user_id_) {
 	}
 };
 
+export async function getProductsInactive(user_id_) {
+	try{
+		if (!user_id_) throw new Error('User ID is required');
+    		const result = await pool.query('select * from proyecto.listar_productos_activos($1);',[user_id_]);
+    	return result.rows || [];
+	}catch(error){
+		console.error('Error fetching products:', error);
+        	throw error;
+	}
+};
+
 export async function getProductById(codigo) {
     const result = await pool.query(`select * from proyecto.obtener_productos_codigo($1)`, [codigo])
     return result.rows[0]

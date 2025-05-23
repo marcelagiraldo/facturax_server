@@ -11,6 +11,17 @@ export const getProductsController = async (req, res, next) => {
     }
 };
 
+export const getProductsInactiveController = async (req, res, next) => {
+    try {
+	    const setId = req.params.id
+	    console.log('Documento en controller: ',setId)
+        const product = await getProducts(setId);
+        res.json(product);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export const getProductByIdController = async (req, res, next) => {
     try {
