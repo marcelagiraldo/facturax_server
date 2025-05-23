@@ -11,7 +11,7 @@ import noteRoutes from './routes/notes.router.js'
 import pool from './config/db.js'
 import {errorHandler} from './middleware/errorHandler.js'
 import cors from 'cors'
-import { sendPushNotification } from "./sendPushNotification";
+import { sendPushNotification } from "./sendPushNotification.js";
 const app = express();
 
 const PORT = process.env.PORT || 3006;
@@ -37,7 +37,7 @@ app.get('/api/ping', async(req,res)=>{
   return res.json(result.rows[0])
 })
 
-app.post("/send-notification", async (req, res) => {
+app.post("/api/send-notification", async (req, res) => {
   const { token, message } = req.body;
 
   if (!token || !message) {
