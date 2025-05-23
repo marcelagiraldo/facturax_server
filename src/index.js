@@ -12,6 +12,7 @@ import pool from './config/db.js'
 import {errorHandler} from './middleware/errorHandler.js'
 import cors from 'cors'
 import { sendPushNotification } from "./sendPushNotification.js";
+import ventasRoutes from './routes/ventas.router.js'
 const app = express();
 
 const PORT = process.env.PORT || 3006;
@@ -57,6 +58,9 @@ app.use('/api/productos', productRoutes);
 app.use('/api/impuestos', taxesRoutes);
 app.use('/api/usuarios', userRoutes);
 app.use('/api/notas', noteRoutes);
+app.use('/api/ventas',ventasRoutes)
+
+
 
 app.use(errorHandler);
 
