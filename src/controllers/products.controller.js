@@ -1,4 +1,4 @@
-import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "../services/product.service.js";
+import { createProduct, deleteProduct, getProductById, getProducts, getProductsInactive, updateProduct } from "../services/product.service.js";
 
 export const getProductsController = async (req, res, next) => {
     try {
@@ -15,7 +15,7 @@ export const getProductsInactiveController = async (req, res, next) => {
     try {
 	    const setId = req.params.id
 	    console.log('Documento en controller: ',setId)
-        const product = await getProducts(setId);
+        const product = await getProductsInactive(setId);
         res.json(product);
     } catch (error) {
         next(error);
